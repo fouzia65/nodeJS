@@ -42,6 +42,6 @@
     "moduleDetection": "force",
     "skipLibCheck": true,
   },
-   "include":["src/**/*.ts"],
+   "include":["src/**/*.ts", "src/database/db.json"],
   "exclude" : ["node_modules", "dist"] //je shob jaigai type error dekhabe na. ba dekhate cai na
 }

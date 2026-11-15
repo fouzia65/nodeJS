@@ -1,5 +1,5 @@
 import type { IncomingMessage, ServerResponse } from "http";
-import { productService } from "../service/product.service";
+import { createProduct, productService } from "../service/product.service";
 import type { Iproducts } from "../types/products";
 import { bodyParser } from "../utils/parseBody";
 
@@ -9,11 +9,11 @@ const productController = async(req: IncomingMessage , res: ServerResponse)=>{
         const method = req.method
           //  console.log("url:",url) // /product
         const urlParam = url?.split('/')
-        console.log(urlParam) // ['', 'product' , '1']
+        // console.log(urlParam) // ['', 'product' , '1']
 
         //ekhane main kahini ta holo url e jodi product thake and tar pashe jodi 1,2,3... etc dewa thake tahole oita number e show korao otherwise null show korao
         const id = urlParam && urlParam[1] === "product" ? Number(urlParam[2]) : null
-        console.log(id) // 1
+        // console.log(id) // 1
 
         // get all data 
       if(url === "/product" && method === "GET"){
@@ -34,7 +34,17 @@ const productController = async(req: IncomingMessage , res: ServerResponse)=>{
       else if(method === "POST" && url === "/product"){
         // "abcd" => "a" , "b" , "c" , "d" => "abcd"
         const body = await bodyParser(req)
-        console.log(body)
+        // console.log(body)
+        const newProduct = {
+          id: Date.now(),
+          ...body
+        }
+        // console.log(newProduct)
+        const products = productService() //[{}, {}]
+        products.push(newProduct) // [{}, {} , {new}]
+        createProduct(products)
+        console.log(products)
+
          res.writeHead(201, {"Content-type": "application/json"})
         res.end(JSON.stringify({message:"Product recived successfully",
                 // data : product
