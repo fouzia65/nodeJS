@@ -1,0 +1,19 @@
+import { rejects } from "assert";
+import { resolve } from "dns";
+import type { IncomingMessage } from "http";
+
+export const bodyParser = (req : IncomingMessage) : Promise<any> =>{
+    let body = " ";
+    return new Promise((resolve, rejects)=>{
+        req.on("data", (chunk) =>{
+            body += chunk;
+        })
+        req.on("end", ()=>{
+            try {
+                resolve(body)
+            } catch (error) {
+                rejects(error)
+            }
+        })
+    })
+}
